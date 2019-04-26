@@ -1,0 +1,36 @@
+check-user-scopes: true
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value:  -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyYucP8q+jr1ocJf0wUgE
+          mQTS1/PWggw3Kl+VO7NHiLBwgxjcZwWLbjaiFBRzbucNz2uYqZmZxGPrQmzQMjEx
+          qd/j3NpoUb/5KhdoiC3BiVWrnRBMs35TxGzMxkNI/+jvptGr3qDZ2S2ZcjpgX87e
+          AU1rvcBcPH2MkK5V5bUeLauM1S0HyvP3AlmZTp2uHjEX+Q4PI2g204MOe9bOHCTb
+          kh8ysmMnkwnDMUtdliQpAMIdxkWhNjLzRszc6PbxLcXAt9QnhTyjP1z/ILhUi/mA
+          3KDM2fcRy3VCNDMSBUqsUnlnlTynQJCmFMaKKu8BnIqitjluZRCfiz9JBK3oTHnP
+          xwIDAQAB
+          -----END PUBLIC KEY-----
+server:
+  port: 9003
+spring:
+  datasource:
+    dbcp2:
+      test-while-idle: true
+      validation-query: SELECT 1
+    initialization-mode: never
+    password: root
+    platform: mysql
+    url: jdbc:mysql://localhost:3306/oauth2_database?useSSL=false
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        
