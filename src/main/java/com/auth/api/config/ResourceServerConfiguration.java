@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -28,8 +29,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	public void configure(HttpSecurity http) throws Exception {
 		
 		http.authorizeRequests() 
-		.antMatchers("/user/signup").permitAll()                
-        .antMatchers("/users/**").hasAnyAuthority("role_admin")
+		.antMatchers(HttpMethod.POST, "/user/").permitAll()
+        .antMatchers("/user/**").hasAnyAuthority("role_admin")
 		
 		//http.authorizeRequests().anyRequest().permitAll().and().cors().and().httpBasic().disable()
 				.and().exceptionHandling()

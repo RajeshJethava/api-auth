@@ -33,4 +33,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+logging:
+  file: logfile.log
         

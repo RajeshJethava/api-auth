@@ -19,9 +19,6 @@ public class CustomUserAuthenticationConverter implements UserAuthenticationConv
 
 	private Collection<? extends GrantedAuthority> defaultAuthorities;
 
-	public CustomUserAuthenticationConverter(){
-		System.out.println("CustomUserAuthenticationConverter()");
-	}
 	public void setDefaultAuthorities(String[] defaultAuthorities) {
 		this.defaultAuthorities = AuthorityUtils
 				.commaSeparatedStringToAuthorityList(StringUtils.arrayToCommaDelimitedString(defaultAuthorities));
@@ -29,7 +26,6 @@ public class CustomUserAuthenticationConverter implements UserAuthenticationConv
 	
 	@Override
 	public Map<String, ?> convertUserAuthentication(Authentication userAuthentication) {
-		System.out.println("userAuthentication.getName()" + userAuthentication.getName());
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
 		response.put(USERNAME, userAuthentication.getName());
 
@@ -41,7 +37,6 @@ public class CustomUserAuthenticationConverter implements UserAuthenticationConv
 
 	@Override
 	public Authentication extractAuthentication(Map<String, ?> map) {
-		System.out.println("extractAuthentication()");
 		if (map.containsKey(USERNAME))
 			return new UsernamePasswordAuthenticationToken(
 					new CustomPrincipal(map.get(USERNAME).toString(), map.get(EMAIL).toString()), "N/A",

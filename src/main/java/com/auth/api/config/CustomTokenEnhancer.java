@@ -9,6 +9,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -23,6 +25,7 @@ import com.auth.api.model.User;
 import com.auth.api.utils.CustomUserAuthenticationConverter;
 
 public class CustomTokenEnhancer extends JwtAccessTokenConverter {
+	private final Logger logger = LoggerFactory.getLogger(CustomTokenEnhancer.class);
 	
 	private boolean includeGrantType;
 	
@@ -30,6 +33,7 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 	
 	@Override
 	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+		logger.info("Token enhance() started"); 
 		User user = (User) authentication.getPrincipal();
 
 		Map<String, Object> info = new LinkedHashMap<String, Object>(accessToken.getAdditionalInformation());
@@ -44,7 +48,6 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 	
 	@Override
 	public OAuth2Authentication extractAuthentication(Map<String, ?> map) {
-		System.out.println("at extractAuthentication()");
 		Set<String> scope = extractScope(map);
 		Map<String, String> parameters = new HashMap<String, String>();
 		Authentication user = userTokenConverter.extractAuthentication(map);
@@ -101,7 +104,6 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 	
 	@Override
 	public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
-		System.out.println("convertAccessToken()");
 		Map<String, Object> response = new HashMap<String, Object>();
 		OAuth2Request clientToken = authentication.getOAuth2Request();
 		if (!authentication.isClientOnly())
@@ -130,7 +132,6 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 
 	@Override
 	public OAuth2AccessToken extractAccessToken(String value, Map<String, ?> map) {
-		System.out.println("extractAccessToken()");
 		DefaultOAuth2AccessToken token = new DefaultOAuth2AccessToken(value);
 		Map<String, Object> info = new HashMap<String, Object>(map);
 
@@ -149,5 +150,6 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 		token.setAdditionalInformation(info);
 		return token;
 	}
+	
 
 }
