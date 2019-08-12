@@ -95,7 +95,6 @@ public class User extends BaseIdEntity implements UserDetails {
 		return authorities;
 	}
 
-	@JsonIgnore
 	@Override
 	public String getPassword() {
 		return password;

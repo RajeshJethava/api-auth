@@ -20,6 +20,10 @@ import com.auth.api.model.CustomPrincipal;
 import com.auth.api.model.User;
 import com.auth.api.service.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = { "User" })
 @RestController
 public class ResourceController {
 
@@ -27,6 +31,7 @@ public class ResourceController {
     UserService userService;  //Service which will do all data retrieval/manipulation work
 					
 	@GetMapping("/users/getCurrentUserDetails")
+	@ApiOperation("My Profile")
 	public String secured() {
 		CustomPrincipal principal = (CustomPrincipal) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();

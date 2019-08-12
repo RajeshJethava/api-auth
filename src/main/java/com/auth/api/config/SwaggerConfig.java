@@ -44,22 +44,9 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 	private static final Logger logger = LoggerFactory.getLogger(SwaggerConfig.class);
 	
 	private static final String OAUTH_SECURITY_SCHEME_NAME = "oauth2";
-	private static final AuthorizationScope ADMIN_AUTH_SCOPE = new AuthorizationScope("role_admin",
+	private static final AuthorizationScope ADMIN_AUTH_SCOPE = new AuthorizationScope("role_admin",/*CLIENT_USER_APP*/
 			"Admin Authorization Code");
 
-	@Bean
-	public Docket userApi() {
-		Docket docket = createNewDocket("User", userPaths());
-		addLoginTags(docket);
-		return docket;
-	}
-	
-	@Bean
-	public Docket loginApi() {
-		Docket docket = createNewDocket("Login", loginPaths());
-		addLoginTags(docket);
-		return docket;
-	}
 	
 	private Docket createNewDocket(String groupName, Predicate<String> paths) {
 		Docket docket = new Docket(DocumentationType.SWAGGER_2).groupName(groupName).apiInfo(apiInfo()).select()
@@ -79,7 +66,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 		Contact contact = new Contact("Demo", "http://www.demo.com", "support@demo.com");
 
 		return new ApiInfoBuilder().title("REST API").description(
-				"REST API for integrating with Solumina Middle Tier. All API endpoint will return a response object which will contain 3 parameters "
+				"REST API for integrating with  Middle Tier. All API endpoint will return a response object which will contain 3 parameters "
 						+ "'data': it will have actual response data (API Endpoint specific response model shown in API documentation will be available in 'data' parameter of original repsonse object), "
 						+ "'meta': it will have some metadata information, 'error': error information if api response have any error.")
 				.termsOfServiceUrl("http://www.demo.com").contact(contact).license("Demo Proprietary API")
@@ -104,10 +91,6 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 				.forPaths(paths).build();
 	}
 	
-	private void addLoginTags(Docket docket) {
-		Tag loginTag = new Tag("Login", "Login API");
-		docket.tags(loginTag, loginTag);
-	}
 	
 	private void setGeneralResponseMessages(Docket docket) {
 		docket.globalResponseMessage(RequestMethod.GET, getReqsResMessages())
@@ -155,8 +138,32 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 	
+	@Bean
+	public Docket userApi() {
+		Docket docket = createNewDocket("User", userPaths());
+		addUserTags(docket);
+		return docket;
+	}
+	
+	@Bean
+	public Docket loginApi() {
+		Docket docket = createNewDocket("Login", loginPaths());
+		addLoginTags(docket);
+		return docket;
+	}
+	
+	private void addLoginTags(Docket docket) {
+		Tag loginTag = new Tag("Login", "Login API");
+		docket.tags(loginTag, loginTag);
+	}
+	
+	private void addUserTags(Docket docket) {
+		Tag loginTag = new Tag("User", "User API");
+		docket.tags(loginTag, loginTag);
+	}
+	
 	private Predicate<String> loginPaths() {
-		return or(regex("/oauth/token.*"), regex("/v1.0/logout"));
+		return or(regex("/oauth/token.*"), regex("./logout"));
 	}
 	
 	@SuppressWarnings("unchecked")
